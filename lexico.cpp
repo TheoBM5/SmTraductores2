@@ -137,6 +137,10 @@ int Lexico::sigSimbolo() {
                                                             if (esDigito(c)) sigEstado(1);
                                                             else
                                                                 if (esLetra(c)) sigEstado(3);
+                                                                else
+                                                                 if(esEspacio(c)) this->estado=0;
+
+                                                                
             break;
         case 1:
             if (esDigito(c)) sigEstado(1);
@@ -167,7 +171,17 @@ int Lexico::sigSimbolo() {
                 else
                     if (simbolo == "int" || simbolo == "float" || simbolo == "void" || simbolo == "if" ||
                         simbolo == "while" || simbolo == "return" || simbolo == "else") this->estado = 10,ind--;
-                    
+                    else
+                    if(c=='[') sigEstado(3);
+                    else
+                         if(esDigito(c)||esEspacio(c)) sigEstado(3);
+                         else
+                              if (c==']'){
+                                   this->estado = 3;
+                                   continua = false;
+                                   simbolo+=c;
+                              }          
+                          
                     else {
                         retroceso();
                         this->estado = 0;
